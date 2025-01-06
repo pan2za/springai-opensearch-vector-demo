@@ -1,10 +1,22 @@
 spring:
   ai:
+    ollama:
+      base-url: http://jeecg-boot-ollama-1:11434  # 设置AI服务的基础URL
+      chat:
+        enabled: true  # 启用聊天功能
+        options:
+          # 指定使用的模型
+          model: qwen2 
+          # 设置温度，影响模型输出的随机性
+          temperature: 0.5
+        # 设置使用的嵌入模型，用于将数据进行向量化的特殊模型（默认是 mxbai-embed-large）
+        embeddings:
+          model: "quentinz/bge-large-zh-v1.5"
     vectorstore:
       opensearch:
-        uris: https://localhost:9200
+        uris: http://kykms-es:9200
         username: admin
-        password: strongPass123#
+        password: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD:secret}
         indexName: spring-ai-document-index
         mappingJson: { "properties": { "embedding": { "type": "knn_vector", "dimension": 1536 } } }
         initialize-schema: true
